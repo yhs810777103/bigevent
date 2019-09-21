@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="css/reset.css" />
     <link rel="stylesheet" href="css/iconfont.css" />
     <link rel="stylesheet" href="css/main.css" />
-    <script src="js/lib/jquery-1.12.4.min.js"></script>
+    <script src="./js/lib/jquery-1.12.4.min.js"></script>
   </head>
 
   <body>
@@ -138,7 +138,10 @@
         }
       }
     </script>
+    <!-- <script src="js/lib/jquery-1.12.4.min.js"></script> -->
     <script src="./js/bootstrap/js/bootstrap.min.js"></script>
+    <script src="./js/utils/config.js"></script>
+    <script src="./js/utils/user.js"></script>
   <script>
     // 给按钮注册点击事件
     // 判断是否退出
@@ -146,8 +149,9 @@
     // 返回到登录界面
     $('#btnLogout').click(function(){
       if(confirm('确定要退出吗?')){
-        location.href='./login.html';
-        $.post('http://localhost:8000/admin/logout',function(res){
+        // location.href='./login.html';
+        user.logout(function(res){
+          console.log('tiyiyiyi')
            if(res.code==200){
              location.href='./login.html';
            }
