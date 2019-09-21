@@ -1,0 +1,6 @@
+config:显示配置信息命令
+request:请求
+utils:工具,实用菜单
+callback:回拨,只回掉函数
+login:登录
+logout:退出
