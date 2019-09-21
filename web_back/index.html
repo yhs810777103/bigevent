@@ -60,6 +60,24 @@
         <a href="JavaScript:;" id="btnLogout"><i class="iconfont icon-tuichu"></i> 退出</a>
       </div>
     </div>
+<!-- 错误提示模态框 -->
+    <div class="modal fade">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">温馨提示!!!!</h4>
+            </div>
+            <div class="modal-body">
+              <p id="pRequest"></p>
+            </div>
+            <div class="modal-footer">
+              <button id="btnture" type="button" class="btn btn-default" data-dismiss="modal">确定</button>
+              <button id="btnfalse" type="button" class="btn btn-primary">取消</button>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
 
     <div class="main" id="main_body">
       <iframe src="main_count.html" frameborder="0" id="main_frame" name="main_frame" frameborder="0" scrolling="auto"></iframe>
@@ -143,20 +161,38 @@
     <script src="./js/utils/config.js"></script>
     <script src="./js/utils/user.js"></script>
   <script>
+    user.logInfo(function(res){
+      console.log(res);     
+      if(res.code==200){
+         $('#userName').html(res.data.nickname);
+         $('#userImg').prop('src',res.data.user_pic);
+      }
+    })
+    // 思路
     // 给按钮注册点击事件
     // 判断是否退出
     // 调用接口 退出功能
     // 返回到登录界面
     $('#btnLogout').click(function(){
-      if(confirm('确定要退出吗?')){
-        // location.href='./login.html';
+      // if(confirm('确定要退出吗?')){
+      //   // location.href='./login.html';
+      //   user.logout(function(res){
+      //      if(res.code==200){
+      //        location.href='./login.html';
+      //      }
+      //   })
+      // }
+      $('#pRequest').html('确定要退出吗?').css('fontSize','20px');
+      $('.modal').modal('show')
+      $('#btnture').click(function(){
         user.logout(function(res){
-          console.log('tiyiyiyi')
-           if(res.code==200){
-             location.href='./login.html';
-           }
+          console.log(res);         
+          location.href='./login.html';
         })
-      }
+      })
+      $('#btnfalse').click(function(){
+        $('.modal').modal('hide');
+      })
     })
   </script>
     

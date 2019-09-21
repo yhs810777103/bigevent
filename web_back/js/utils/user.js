@@ -8,5 +8,10 @@ var user={
         $.post(URLIST.user_logout,function(res){
             callback(res);
         })
+    },
+    logInfo:function(callback){
+        $.get(URLIST.user_logInfo,function(res){
+            callback(res);
+        })
     }
 }
