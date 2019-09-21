@@ -13,6 +13,7 @@
   </head>
 
   <body>
+<!-- 左侧选型区域 -->
     <div class="sider">
       <a href="#" class="logo"><img src="images/logo02.png" alt="logo"/></a>
       <div class="user_info">
@@ -47,7 +48,7 @@
         </div>
       </div>
     </div>
-
+<!-- 顶部搜索区域 -->
     <div class="header_bar">
       <form class="search_form">
         <input type="text" placeholder="请输入搜索内容" />
@@ -56,7 +57,7 @@
       <div class="user_center_link">
         <a href="user.html" onclick="setMenu(3,0)" target="main_frame">个人中心</a>
         <img src="images/2.jpg" alt="person" />
-        <a href="javascript:;" id="btnLogout"><i class="iconfont icon-tuichu"></i> 退出</a>
+        <a href="JavaScript:;" id="btnLogout"><i class="iconfont icon-tuichu"></i> 退出</a>
       </div>
     </div>
 
@@ -137,7 +138,23 @@
         }
       }
     </script>
-
+    <script src="./js/bootstrap/js/bootstrap.min.js"></script>
+  <script>
+    // 给按钮注册点击事件
+    // 判断是否退出
+    // 调用接口 退出功能
+    // 返回到登录界面
+    $('#btnLogout').click(function(){
+      if(confirm('确定要退出吗?')){
+        location.href='./login.html';
+        $.post('http://localhost:8000/admin/logout',function(res){
+           if(res.code==200){
+             location.href='./login.html';
+           }
+        })
+      }
+    })
+  </script>
     
   </body>
 </html>
