@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>文章列表</title>
+        <link rel="stylesheet" href="js/bootstrap/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="css/reset.css" />
+        <link rel="stylesheet" href="css/iconfont.css" />
+        <link rel="stylesheet" href="css/main.css" />
+        <link type="text/css" rel="stylesheet" href="js/plugin/jedate/css/jedate.css" />
+        <script src="js/lib/jquery-1.12.4.min.js"></script>
+        <script src="js/plugin/jedate/js/jedate.js"></script>
+        <script src="js/plugin/tinymce/js/tinymce/tinymce.min.js"></script>
+        <script src="js/plugin/tinymce/js/tinymce_setup.js"></script>
+        <script src="./js/lib/template-web.js"></script>
+    </head>
+
+    <body>
+        <div class="container-fluid">
+            <div class="common_title">文章编辑</div>
+            <div class="container-fluid common_con">
+                <form class="form-horizontal article_form" id="myform">
+                    <input type="hidden" name="id" id="article_id" />
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-2 control-label">文章标题：</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="title" class="form-control" id="title" value="文章标题文字" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPassword3" class="col-sm-2 control-label">文章封面：</label>
+                        <div class="col-sm-10">
+                            <img src="images/pic06.jpg" id="cover" class="article_cover" />
+                            <input type="file" name="cover" id="exampleInputFile" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-2 control-label">文章类别：</label>
+                        <div class="col-sm-4">
+                            <select class="form-control" name="type" id="category">
+                                <!-- <option>类别一</option>
+                                <option>类别二</option>
+                                <option>类别三</option>
+                                <option selected>类别四</option>
+                                <option>类别五</option> -->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-2 control-label">发布时间：</label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="date" value="2019-05-17" id="dateinput" />
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button"
+                                        onclick="jeDate('#dateinput',{trigger:false,format: 'YYYY-MM-DD'})"><i
+                                            class="iconfont icon-icondate"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-2 control-label">文章内容：</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="rich_content" placeholder="文章内容" value="文章内容" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="button" id="btnSave" class="btn btn-success">修改</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <script src="./js/utils/config.js"></script>
+        <script src="./js/utils/article.js"></script>
+        <script src="./js/utils/category.js"></script>
+        </script>
+        <script id="template_category" type="text/html">
+        {{each data item}}
+        <option value="{{item.id}}">{{item.name}}</option>
+        {{/each}}
+        </script>
+        <script>
+
+            function queryCategory() {
+                category.search(function (res) {
+                    var htmlStr = template('template_category', res);
+                    $('#category').html(htmlStr);
+
+                    // 确保 文章类型先获取成功之后，再去获取文章的内容
+                    getDetail();
+                })
+            }
+            queryCategory();
+
+            function getDetail() {
+                //1. 获取从地址栏中传入的id值
+                // acticle_edit.html?id=124
+                // window.location.search: ?id=124
+                // window.location.search.substr(4) : 124
+                var id = window.location.search.substr(4);
+
+                $('#article_id').val(id);
+
+                //2.根据id去获取文章的详情，显示在页面上。
+                article.getDetail(id, function (res) {
+                    console.log(res);
+                    if (res.code === 200) {
+                        $('#title').val(res.data.title);
+                        $('#cover').attr('src', res.data.cover);
+                        $('#dateinput').val(res.data.date);
+                        $('#rich_content').val(res.data.content);
+
+                        $('#category').val(res.data.type);
+                        // tinyMCE.activeEditor.setContent(res.data.content)
+                    }
+                })
+
+            }
+
+            function save() {
+                //1.获取信息
+                var fd = new FormData(document.getElementById('myform'));
+                //手动设置内容
+                fd.append('content', tinyMCE.activeEditor.getContent());
+                // 魔术数
+                article.edit(fd, function (res) {
+                    // 3.根据接口进行反馈
+                    console.log('res', res);
+                    if (res.code === 200) {
+                        window.location.href = 'article_list.html';
+                    }
+                })
+            }
+
+            $('#btnSave').click(function () {
+                save();
+            });
+        </script>
+    </body>
+</html>

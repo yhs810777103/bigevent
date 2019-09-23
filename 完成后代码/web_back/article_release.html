@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>文章列表</title>
+    <link rel="stylesheet" href="js/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/iconfont.css" />
+    <link rel="stylesheet" href="css/main.css" />
+    <link type="text/css" rel="stylesheet" href="js/plugin/jedate/css/jedate.css" />
+    <script src="js/lib/jquery-1.12.4.min.js"></script>
+    <script src="js/plugin/jedate/js/jedate.js"></script>
+    <script src="js/plugin/tinymce/js/tinymce/tinymce.min.js"></script>
+    <script src="js/plugin/tinymce/js/tinymce_setup.js"></script>
+    <script src="js/lib/template-web.js"></script>
+  </head>
+
+  <body>
+    <div class="container-fluid">
+      <div class="common_title">写文章</div>
+      <div class="container-fluid common_con">
+        <form class="form-horizontal article_form" id="myform">
+          <div class="form-group">
+            <label for="inputEmail3" class="col-sm-2 control-label">文章标题：</label>
+            <div class="col-sm-10">
+              <input name="title" type="email" class="form-control" id="inputEmail3" placeholder="文章标题" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="cover" class="col-sm-2 control-label">文章封面：</label>
+            <div class="col-sm-10">
+              <img id="preImg" style="border:1px solid #ccc;margin-left:1em;" for="cover" src="images/nopic.jpg" alt="" />
+              <input name="cover" type="file" id="cover" accept="image/png" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="category" class="col-sm-2 control-label">文章类别：</label>
+            <div class="col-sm-4">
+              <select id="category" name="type" class="form-control"> </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="dateinput" class="col-sm-2 control-label">发布时间：</label>
+            <div class="col-sm-4">
+              <div class="input-group">
+                <input name="date" type="text" class="form-control" placeholder="YYYY-MM-DD" id="dateinput" />
+                <span class="input-group-btn">
+                  <button class="btn btn-default" type="button" onclick="jeDate('#dateinput',{trigger:false,format: 'YYYY-MM-DD'})"><i class="iconfont icon-icondate"></i></button>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="rich_content" class="col-sm-2 control-label">文章内容：</label>
+            <div class="col-sm-10">
+              <textarea class="form-control" id="rich_content" placeholder="文章内容">
+                            请输入文章内容
+                </textarea
+              >
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <button type="button" class="btn btn-success" id="btnAdd">发布</button>
+              <button type="button" class="btn btn-default">存为草稿</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script type="text/html" id="template_category">
+      {{each data item}}
+      <option value="{{item.id}}">{{item.name}}</option>
+      {{/each }}
+    </script>
+    <script src="./js/utils/config.js"></script>
+    <script src="./js/utils/category.js"></script>
+    <script src="./js/utils/article.js"></script>
+    <script>
+      $(function() {
+        // 获取文章类别
+
+        category.search(function(res) {
+          console.log(res);
+          // 渲染
+          var htmlStr = template('template_category', res);
+          $('#category').html(htmlStr);
+          console.log(htmlStr);
+        });
+      });
+
+      //添加
+      function doAdd() {
+        // 1. 收集信息
+        // 2. 发请求
+        // 3. 根据结果，给出反馈
+        // debugger;
+        var fd = new FormData(document.getElementById('myform'));
+        // 给fd中添加一个参数 state，值是“已发布”
+        fd.append('state', '已发布');
+        // content通过富文本编辑器来获取
+        fd.append('content', tinyMCE.activeEditor.getContent());
+
+        article.publish(fd, function(res) {
+          if (res.code === 201) {
+            //  跳转
+            window.location.href = './article_list.html';
+          } else if (res.code === 400) {
+            alert('没有封面');
+            return;
+          }
+        });
+      }
+
+      $('#btnAdd').click(function() {
+        doAdd();
+      });
+
+      // 实现图片预览效果
+      $('#cover').change(function() {
+        var obj = this.files[0];
+        if (obj) {
+          console.dir(this.files);
+          var urlstring = URL.createObjectURL(obj);
+          console.log(urlstring);
+          // 给预览图片，设置src
+          $('#preImg').attr('src', urlstring);
+        } else {
+          $('#preImg').attr('src', 'images/nopic.jpg');
+        }
+      });
+    </script>
+  </body>
+</html>

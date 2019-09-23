@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>html页面</title>
+        <style>
+            .container {
+                width: 800px;
+                padding: 2em;
+                margin: 40px auto;
+                border: 1px solid #ccc;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class='container'>
+            <h1>标题</h1>
+            <div id="test"></div>
+            <input class="dateinput dateicon" id="ymd01" type="text" placeholder="YYYY年MM月DD日 hh:mm:ss" readonly>
+        </div>
+        <script src="./jedate-6.5.0/dist/jedate.min.js"></script>
+        <link rel="stylesheet" href="./jedate-6.5.0/skin/jedate.css">
+        <script>
+            //点击显示（YYYY年MM月DD日 hh:mm:ss）格式
+            jeDate("#ymd01", {
+                isinitVal: true,
+                festival: true,
+                format: 'YYYY年MM月DD日 hh:mm:ss'
+            });
+
+        </script>
+    </body>
+
+</html>

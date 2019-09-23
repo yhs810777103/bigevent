@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>html页面</title>
+        <style>
+            .container {
+                width: 800px;
+                padding: 2em;
+                margin: 40px auto;
+                border: 1px solid #ccc;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class='container'>
+            <h1>axios</h1>
+            <div></div>
+        </div>
+        <script src="./js/axios.min.js"></script>
+        <script>
+
+            axios.get('http://localhost:8000/admin/search')
+                .then(function (response) {
+                    // handle success
+                    console.log(response.data);
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+                .finally(function () {
+                    // always executed
+                });
+
+
+        </script>
+    </body>
+
+</html>
