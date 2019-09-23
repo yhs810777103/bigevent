@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="css/iconfont.css" />
     <link rel="stylesheet" href="css/main.css" />
     <script src="./js/lib/jquery-1.12.4.min.js"></script>
-  </head>
+  </head>  
 
   <body>
 <!-- 左侧选型区域 -->
@@ -168,20 +168,21 @@
          $('#userImg').prop('src',res.data.user_pic);
       }
     })
+    // 初级版获取管理员信息
+    // $.get('http://localhost:8000/admin/getuser',function(res){
+    //   console.log(res);     
+    //   if(res.code==200){
+    //     $('#userName').html(res.data.nickname);
+    //     $('#userImg').attr('src',res.data.user_pic)
+    //   }
+    // })
     // 思路
     // 给按钮注册点击事件
     // 判断是否退出
     // 调用接口 退出功能
+    // 判断请求状态
     // 返回到登录界面
     $('#btnLogout').click(function(){
-      // if(confirm('确定要退出吗?')){
-      //   // location.href='./login.html';
-      //   user.logout(function(res){
-      //      if(res.code==200){
-      //        location.href='./login.html';
-      //      }
-      //   })
-      // }
       $('#pRequest').html('确定要退出吗?').css('fontSize','20px');
       $('.modal').modal('show')
       $('#btnture').click(function(){
@@ -194,6 +195,16 @@
         $('.modal').modal('hide');
       })
     })
+    // 初级版退出登录
+    // $('#btnLogout').click(function(){
+    //   if(confirm('确定要退出吗?')){
+    //     $.post('http://localhost:8000/admin/logout',function(res){
+    //       if(res.code==200){
+    //         location.href='./login.html';
+    //       }
+    //     })
+    //   }
+    // })
   </script>
     
   </body>
