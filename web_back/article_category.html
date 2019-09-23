@@ -191,9 +191,8 @@
         //         })
         //     }
         // })
-
-        // 删除功能(创建一个删除函数,a标签删除的href里调用)
-       function deleteTr(id){
+       
+        function deleteTr(id){//删除功能(创建一个删除函数,a标签删除的href里调用)
         if(confirm('确定要删除吗?')){
             category.del(id,function(res){
                 if(res.code==200){
