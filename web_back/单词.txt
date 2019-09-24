@@ -5,3 +5,4 @@ callback:回拨,只回掉函数
 login:登录
 logout:退出
 article_category:文章类别
+slug:别名
